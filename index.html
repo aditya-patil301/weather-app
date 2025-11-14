@@ -1,29 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Weather App</title>
-  <link rel="stylesheet" href="CSS/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="CSS/style.css">
 </head>
+
 <body>
-  
-  <div class="container">
-    <h1>🌤️ Weather Application</h1>
 
-    <div class="search-section">
-      <input type="text" id="city-input" placeholder="Enter city name">
-      <button id="search-btn">Get Weather</button>
+    <div class="container">
+        <h1>🌤️ Weather Application</h1>
+
+        <div class="search-section">
+            <input type="text" id="city-input" placeholder="Enter city name">
+            <button id="search-btn">Get Weather</button>
+        </div>
+
+        <div class="weather-info">
+            <p id="city-name">City: </p>
+            <p id="temperature">Temperature: </p>
+            <p id="weather-description">Description: </p>
+        </div>
+
+        <div class="forecast">
+            <h2>3-Day Weather Forecast</h2>
+
+            <div class="forecast-days">
+                <div class="day-card">
+                    <div class="day-date">Monday, Oct 21</div>
+                    <div class="day-weather-icon">
+                        <img src="https://cdn-icons-png.flaticon.com/512/1163/1163661.png" alt="Sunny Icon">
+                    </div>
+                    <div class="day-temperature">28°C</div>
+                    <div class="day-description">Sunny</div>
+                </div>
+
+                <div class="day-card">
+                    <div class="day-date">Tuesday, Oct 22</div>
+                    <div class="day-weather-icon">
+                        <img src="https://cdn-icons-png.flaticon.com/512/414/414825.png" alt="Cloudy Icon">
+                    </div>
+                    <div class="day-temperature">25°C</div>
+                    <div class="day-description">Partly Cloudy</div>
+                </div>
+
+                <div class="day-card">
+                    <div class="day-date">Wednesday, Oct 23</div>
+                    <div class="day-weather-icon">
+                        <img src="https://cdn-icons-png.flaticon.com/512/414/414974.png" alt="Rain Icon">
+                    </div>
+                    <div class="day-temperature">22°C</div>
+                    <div class="day-description">Light Rain</div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="weather-info">
-      <p id="city-name">City: -</p>
-      <p id="temperature">Temperature:</p>
-      <p id="weather-description">Description:</p>
-    </div>
-  </div>
-
-  <script src="JS/app.js"></script>
+    <script src="JS/app.js"></script>
 
 </body>
+
 </html>
