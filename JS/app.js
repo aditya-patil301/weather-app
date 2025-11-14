@@ -34,3 +34,39 @@ document.getElementById('search-btn').addEventListener('click', function() {
 
   fetchWeatherData(city);
 });
+
+
+function generateWeatherForecast(city) {
+    const weatherConditions = ["Sunny", "Cloudy", "Rainy", "Snowy"];
+    const forecast = [];
+    const currentDate = new Date();
+
+    for (let i = 0; i < 3; i++) {
+
+        const day = currentDate.getDate();
+        const month = currentDate.getMonth() + 1; // Months are 0-based
+        const year = currentDate.getFullYear();
+
+        const temperature = Math.random() * 45 - 10; // -10°C to 35°C
+        const condition = weatherConditions[Math.floor(Math.random() * weatherConditions.length)];
+        const humidity = Math.random() * 100;
+        const windSpeed = Math.random() * 20;
+
+        forecast.push({
+            date: `${month}/${day}/${year}`,
+            temperature: temperature.toFixed(1),
+            condition,
+            humidity: humidity.toFixed(1),
+            windSpeed: windSpeed.toFixed(1)
+        });
+
+        currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    return forecast;
+}
+
+
+const city = "New York";
+const forecastData = generateWeatherForecast(city);
+console.log(forecastData);
