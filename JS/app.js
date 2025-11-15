@@ -35,8 +35,16 @@ document.getElementById('search-btn').addEventListener('click', function() {
   fetchWeatherData(city);
 });
 
+function getUserLocation() {
+    return {
+        latitude: 22.7196,
+        longitude: 75.8577
+    };
+}
 
-function generateWeatherForecast(city) {
+
+
+function generateWeatherForecast(city, latitude, longitude) {
     const weatherConditions = ["Sunny", "Cloudy", "Rainy", "Snowy"];
     const forecast = [];
     const currentDate = new Date();
@@ -57,7 +65,9 @@ function generateWeatherForecast(city) {
             temperature: temperature.toFixed(1),
             condition,
             humidity: humidity.toFixed(1),
-            windSpeed: windSpeed.toFixed(1)
+            windSpeed: windSpeed.toFixed(1),
+            latitude,
+            longitude
         });
 
         currentDate.setDate(currentDate.getDate() + 1);
@@ -67,6 +77,7 @@ function generateWeatherForecast(city) {
 }
 
 
-const city = "New York";
-const forecastData = generateWeatherForecast(city);
+const city = "Indore";
+const userLocation = getUserLocation();
+const forecastData = generateWeatherForecast(city, userLocation.latitude, userLocation.longitude);
 console.log(forecastData);
