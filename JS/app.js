@@ -44,7 +44,7 @@ function getUserLocation() {
 
 
 
-function generateWeatherForecast(city, latitude, longitude) {
+function generateWeatherForecast(latitude, longitude) {
     const weatherConditions = ["Sunny", "Cloudy", "Rainy", "Snowy"];
     const forecast = [];
     const currentDate = new Date();
@@ -77,7 +77,7 @@ function generateWeatherForecast(city, latitude, longitude) {
 }
 
 
-const city = "Indore";
+// const city = "Indore";
 const userLocation = getUserLocation();
-const forecastData = generateWeatherForecast(city, userLocation.latitude, userLocation.longitude);
+const forecastData = generateWeatherForecast(userLocation.latitude, userLocation.longitude);
 console.log(forecastData);
