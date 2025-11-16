@@ -36,6 +36,12 @@ document.getElementById('search-btn').addEventListener('click', function() {
 });
 
 function getUserLocation() {
+    const isLocationAvailable = Math.random() > 0.2;
+
+    if (!isLocationAvailable) {
+        throw new Error("Failed to detect location. Geolocation data is unavailable.");
+    }
+
     return {
         latitude: 22.7196,
         longitude: 75.8577
@@ -45,6 +51,10 @@ function getUserLocation() {
 
 
 function generateWeatherForecast(latitude, longitude) {
+    if (typeof city !== 'string' || city.trim() === "") {
+        throw new Error("Invalid city name. Please provide a valid city.");
+    }  
+
     const weatherConditions = ["Sunny", "Cloudy", "Rainy", "Snowy"];
     const forecast = [];
     const currentDate = new Date();
@@ -77,7 +87,18 @@ function generateWeatherForecast(latitude, longitude) {
 }
 
 
-// const city = "Indore";
-const userLocation = getUserLocation();
-const forecastData = generateWeatherForecast(userLocation.latitude, userLocation.longitude);
-console.log(forecastData);
+const city = "Indore";
+
+try {
+    const userLocation = getUserLocation();
+    const forecastData = generateWeatherForecast(
+        city,
+        userLocation.latitude,
+        userLocation.longitude
+    ); 
+
+    console.log("Weather Forecast:", forecastData);
+
+} catch (error) {
+    console.error("Error:", error.message);
+}
