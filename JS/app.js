@@ -1,81 +1,95 @@
 async function fetchWeatherData(city) {
-  const apiKey = '717ff386d14e962cc454608e51678dd9'; 
-  const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+    const apiKey = '717ff386d14e962cc454608e51678dd9';
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
 
-  try {
-    const response = await fetch(apiUrl);
-    const data = await response.json();
+    try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
 
-    if (data.cod === '404' || data.cod === 404) {
-      document.getElementById('city-name').textContent = 'City not found!';
-      document.getElementById('temperature').textContent = '';
-      document.getElementById('weather-description').textContent = '';
-      return;
+        if (data.cod == 404) {
+            document.getElementById('city-name').textContent = 'City not found!';
+            document.getElementById('temperature').textContent = '';
+            document.getElementById('weather-description').textContent = '';
+            return;
+        }
+
+        console.log('Weather data:', data);
+
+        document.getElementById('city-name').textContent = `City: ${data.name}`;
+        document.getElementById('temperature').textContent = `Temperature: ${data.main.temp}°C`;
+        document.getElementById('weather-description').textContent =
+            `Weather: ${data.weather[0].description}`;
+
+    } catch (error) {
+        console.error('Error fetching weather data:', error);
+        document.getElementById('city-name').textContent = 'Error fetching data!';
     }
-
-    console.log('Weather data:', data);
-
-    document.getElementById('city-name').textContent = `City: ${data.name}`;
-    document.getElementById('temperature').textContent = `Temperature: ${data.main.temp}°C`;
-    document.getElementById('weather-description').textContent = `Weather: ${data.weather[0].description}`;
-
-  } catch (error) {
-    console.error('Error fetching weather data:', error);
-    document.getElementById('city-name').textContent = 'Error fetching data!';
-  }
 }
 
 document.getElementById('search-btn').addEventListener('click', function() {
-  const city = document.getElementById('city-input').value.trim();
-  if (city === "") {
-    alert("Please enter a city name!");
-    return;
-  }
-
-  fetchWeatherData(city);
-});
-
-function getUserLocation() {
-    const isLocationAvailable = Math.random() > 0.2;
-
-    if (!isLocationAvailable) {
-        throw new Error("Failed to detect location. Geolocation data is unavailable.");
+    const city = document.getElementById('city-input').value.trim();
+    if (city === "") {
+        alert("Please enter a city name!");
+        return;
     }
 
+    fetchWeatherData(city);
+});
+
+
+async function fetchWeatherByCoordinates(lat, lon) {
+    const apiKey = '717ff386d14e962cc454608e51678dd9';
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+
+    try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+
+        console.log("Weather by Coordinates:", data);
+
+        document.getElementById("city-name").textContent = `City: ${data.name}`;
+        document.getElementById("temperature").textContent = `Temperature: ${data.main.temp}°C`;
+        document.getElementById("weather-description").textContent =
+            `Weather: ${data.weather[0].description}`;
+
+    } catch (error) {
+        console.error("Error fetching coordinate weather:", error);
+    }
+}
+
+function getUserLocation() {
     return {
-        latitude: 22.7196,
-        longitude: 75.8577
+        latitude: 40.7128,
+        longitude: -74.0060
     };
 }
 
+const userLocation = getUserLocation();
 
+function generateWeatherForecast(city, latitude, longitude) {
 
-function generateWeatherForecast(latitude, longitude) {
-    if (typeof city !== 'string' || city.trim() === "") {
+    if (typeof city !== "string" || city.trim() === "") {
         throw new Error("Invalid city name. Please provide a valid city.");
-    }  
+    }
 
-    const weatherConditions = ["Sunny", "Cloudy", "Rainy", "Snowy"];
+    const conditions = ["Sunny", "Cloudy", "Rainy", "Snowy"];
     const forecast = [];
     const currentDate = new Date();
 
     for (let i = 0; i < 3; i++) {
 
-        const day = currentDate.getDate();
-        const month = currentDate.getMonth() + 1; // Months are 0-based
-        const year = currentDate.getFullYear();
-
-        const temperature = Math.random() * 45 - 10; // -10°C to 35°C
-        const condition = weatherConditions[Math.floor(Math.random() * weatherConditions.length)];
-        const humidity = Math.random() * 100;
-        const windSpeed = Math.random() * 20;
+        const date = `${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear()}`;
+        const temperature = (Math.random() * 45 - 10).toFixed(1);
+        const condition = conditions[Math.floor(Math.random() * conditions.length)];
+        const humidity = (Math.random() * 100).toFixed(1);
+        const windSpeed = (Math.random() * 20).toFixed(1);
 
         forecast.push({
-            date: `${month}/${day}/${year}`,
-            temperature: temperature.toFixed(1),
+            date,
+            temperature,
             condition,
-            humidity: humidity.toFixed(1),
-            windSpeed: windSpeed.toFixed(1),
+            humidity,
+            windSpeed,
             latitude,
             longitude
         });
@@ -86,19 +100,29 @@ function generateWeatherForecast(latitude, longitude) {
     return forecast;
 }
 
-
-const city = "Indore";
-
-try {
-    const userLocation = getUserLocation();
-    const forecastData = generateWeatherForecast(
-        city,
-        userLocation.latitude,
-        userLocation.longitude
-    ); 
-
-    console.log("Weather Forecast:", forecastData);
-
-} catch (error) {
-    console.error("Error:", error.message);
+function getWeatherIcon(condition) {
+    switch (condition) {
+        case "Sunny": return "☀️";
+        case "Cloudy": return "☁️";
+        case "Rainy": return "🌧️";
+        case "Snowy": return "❄️";
+        default: return "❓";
+    }
 }
+
+const forecastData = generateWeatherForecast(
+    "Indore",
+    userLocation.latitude,
+    userLocation.longitude
+);
+
+forecastData.forEach(day => {
+    const icon = getWeatherIcon(day.condition);
+
+    console.log("---------------------------------");
+    console.log(`Date: ${day.date}`);
+    console.log(`Condition: ${day.condition} ${icon}`);
+    console.log(`Temperature: ${day.temperature}°C`);
+    console.log(`Humidity: ${day.humidity}%`);
+    console.log(`Location: (${day.latitude}, ${day.longitude})`);
+});
