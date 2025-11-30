@@ -12,7 +12,7 @@ body {
 
 .container {
   background-color: #ffffff;
-  width: 450px;
+  width: 600px;
   height: auto;
   padding: 25px;
   border-radius: 16px;
@@ -68,6 +68,19 @@ h1 {
   transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
+button{
+  background-color: #22c55e;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  margin: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
 #search-btn:hover {
   background-color: #16a34a;
   transform: scale(1.06);
@@ -81,6 +94,7 @@ h1 {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  margin-top: 10px;
 }
 
 .weather-info:hover {

@@ -57,6 +57,55 @@ async function fetchWeatherByCoordinates(lat, lon) {
     }
 }
 
+let isFahrenheit = false;
+let favoriteCities = JSON.parse(localStorage.getItem("favoriteCities")) || [];
+
+document.getElementById("add-fav-btn").addEventListener("click", () => {
+    const city = document.getElementById("city-name").textContent.replace("City: ", "").trim();
+
+    if (!city) return alert("Search a city first");
+
+    if (favoriteCities.some(c => c.name === city)) {
+        alert("Already in favorites");
+        return;
+    }
+
+    favoriteCities.push({ name: city });
+    localStorage.setItem("favoriteCities", JSON.stringify(favoriteCities));
+
+    displayFavoriteCities();
+});
+
+function removeFavoriteCity(cityName) {
+    favoriteCities = favoriteCities.filter(c => c.name !== cityName);
+    localStorage.setItem("favoriteCities", JSON.stringify(favoriteCities));
+    displayFavoriteCities();
+}
+
+function displayFavoriteCities() {
+    const box = document.getElementById("favorite-cities");
+    box.innerHTML = "";
+
+    favoriteCities.forEach(city => {
+        const btn = document.createElement("button");
+        btn.textContent = city.name;
+        btn.onclick = () => fetchWeatherData(city.name);
+
+        const removeBtn = document.createElement("span");
+        removeBtn.textContent = "Remove";
+        removeBtn.style.cursor = "pointer";
+        removeBtn.onclick = () => removeFavoriteCity(city.name);
+
+        const wrapper = document.createElement("div");
+        wrapper.appendChild(btn);
+        wrapper.appendChild(removeBtn);
+
+        box.appendChild(wrapper);
+    });
+}
+
+displayFavoriteCities();
+
 function getUserLocation() {
     return {
         latitude: 40.7128,
@@ -114,13 +163,11 @@ function getWeatherIcon(condition) {
     }
 }
 
-let isFahrenheit = false; 
-
 function convertTemperature(tempInCelsius, toFahrenheit = true) {
     if (toFahrenheit) {
-        return (tempInCelsius * 9/5) + 32; 
+        return (tempInCelsius * 9/5) + 32; // C → F
     }
-    return tempInCelsius; 
+    return tempInCelsius; // Keep Celsius
 }
 
 function toggleTemperatureUnit() {
